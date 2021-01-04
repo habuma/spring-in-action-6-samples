@@ -1,0 +1,6 @@
+#tag::setDatabaseName[]
+spring:
+  datasource:
+    generate-unique-name: false
+    name: tacocloud
+#end::setDatabaseName[]

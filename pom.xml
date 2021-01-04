@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>sia</groupId>
+    <artifactId>taco-cloud-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>6.0</version>
+    <name>Taco Cloud Parent Project</name>
+
+    <modules>
+        <module>ch01/taco-cloud</module>
+        <module>ch02/taco-cloud</module>
+        <module>ch03/tacos-jdbctemplate</module>
+        <module>ch03/tacos-sd-jpa</module>
+        <module>ch03/tacos-sd-jdbc</module>
+        <!-- NEED TO FIX CASSANDRA TESTS TO USE EMBEDDED CASSANDRA -->
+        <!-- <module>ch04/tacos-sd-cassandra</module> -->
+        <module>ch04/tacos-sd-mongodb</module>
+        <module>ch05/taco-cloud</module>
+        <module>ch06/taco-cloud</module>
+    </modules>
+
+</project>
