@@ -21,6 +21,8 @@
         <module>ch04/tacos-sd-mongodb</module>
         <module>ch05/taco-cloud</module>
         <module>ch06/taco-cloud</module>
+        <module>ch07</module>
+        <module>ch08</module>
     </modules>
 
 </project>
