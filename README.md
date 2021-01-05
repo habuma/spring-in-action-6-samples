@@ -2,8 +2,6 @@
 
 This repo will hold the sample code from [Spring in Action, 6th edition](https://www.manning.com/books/spring-in-action-sixth-edition).
 
-As you've no doubt noticed, only code for chapters 1-6 are currently available. This is only a temporary situation, though. I intend to get code for chapters 7 and 8 in very soon. Stay tuned.
-
 ## What are all of the weird comments with "tag::" and "end::" about???
 
 The source code will have several weird comments, many starting with "tag::" and some with "end::". There may also be large chunks of code commented out.
