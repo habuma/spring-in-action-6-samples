@@ -1,8 +1,9 @@
 package tacos.web;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.groupingBy;
+
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import tacos.Ingredient;
 import tacos.Ingredient.Type;
-import tacos.TacoOrder;
 import tacos.Taco;
+import tacos.TacoOrder;
 import tacos.data.IngredientRepository;
 
 @Controller
@@ -35,17 +36,22 @@ public class DesignTacoController {
     this.ingredientRepo = ingredientRepo;
   }
 
-  @ModelAttribute
-  public void addIngredientsToModel(Model model) {
-    List<Ingredient> ingredients = new ArrayList<>();
-    ingredientRepo.findAll().forEach(i -> ingredients.add(i));
+	@ModelAttribute
+	public void addIngredientsToModel(Model model) {
+		List<Ingredient> ingredients = (List<Ingredient>) ingredientRepo.findAll();
 
-    Type[] types = Ingredient.Type.values();
-    for (Type type : types) {
-      model.addAttribute(type.toString().toLowerCase(),
-          filterByType(ingredients, type));
-    }
-  }
+		// group the Ingredients by type and put them in a list
+		Map<Type, List<Ingredient>> ingredientsByType = 
+				ingredients.stream().collect(groupingBy(Ingredient::getType));
+
+		
+		// iterate through the Map and set the model attributes for the check boxes
+		ingredientsByType.forEach((type , list) -> {
+			model.addAttribute(type.toString().toLowerCase(), list);
+		});
+		
+	}
+	
 
   @ModelAttribute(name = "tacoOrder")
   public TacoOrder order() {
@@ -74,14 +80,6 @@ public class DesignTacoController {
     tacoOrder.addTaco(taco);
 
     return "redirect:/orders/current";
-  }
-
-  private Iterable<Ingredient> filterByType(
-      List<Ingredient> ingredients, Type type) {
-    return ingredients
-              .stream()
-              .filter(x -> x.getType().equals(type))
-              .collect(Collectors.toList());
   }
 
 }
