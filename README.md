@@ -4,6 +4,8 @@ This repo will hold the sample code from [Spring in Action, 6th edition](https:/
 
 ## What are all of the weird comments with "tag::" and "end::" about???
 
+(Note: In the most recent commit, I've removed these comments. But they may come back, so I'll leave this mention of them here.)
+
 The source code will have several weird comments, many starting with "tag::" and some with "end::". There may also be large chunks of code commented out.
 
 The "tag::" and "end::" comments are there for the sake of building the book itself. The code in between those comments are pulled into the manuscript so that (as much as possible) code you see in the book comes straight from code that was built and tested.
