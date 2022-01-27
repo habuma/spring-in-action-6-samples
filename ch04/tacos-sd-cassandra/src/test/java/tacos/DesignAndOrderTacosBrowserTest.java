@@ -23,27 +23,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class DesignAndOrderTacosBrowserTest {
-  
+
   private static HtmlUnitDriver browser;
-  
+
   @LocalServerPort
   private int port;
-  
+
   @Autowired
   TestRestTemplate rest;
-  
+
   @BeforeAll
   public static void setup() {
     browser = new HtmlUnitDriver();
     browser.manage().timeouts()
         .implicitlyWait(10, TimeUnit.SECONDS);
   }
-  
+
   @AfterAll
   public static void closeBrowser() {
     browser.quit();
   }
-  
+
   @Test
   public void testDesignATacoPage_HappyPath() throws Exception {
     browser.get(homePageUrl());
@@ -55,7 +55,7 @@ public class DesignAndOrderTacosBrowserTest {
     fillInAndSubmitOrderForm();
     assertThat(browser.getCurrentUrl()).isEqualTo(homePageUrl());
   }
-  
+
   @Test
   public void testDesignATacoPage_EmptyOrderInfo() throws Exception {
     browser.get(homePageUrl());
@@ -73,7 +73,7 @@ public class DesignAndOrderTacosBrowserTest {
     clickDesignATaco();
     assertDesignPageElements();
     buildAndSubmitATaco("Basic Taco", "FLTO", "GRBF", "CHED", "TMTO", "SLSA");
-    submitInvalidOrderForm(); 
+    submitInvalidOrderForm();
     fillInAndSubmitOrderForm();
     assertThat(browser.getCurrentUrl()).isEqualTo(homePageUrl());
   }
@@ -85,7 +85,7 @@ public class DesignAndOrderTacosBrowserTest {
     assertDesignPageElements();
 
     for (String ingredient : ingredients) {
-      browser.findElementByCssSelector("input[value='" + ingredient + "']").click();      
+      browser.findElementByCssSelector("input[value='" + ingredient + "']").click();
     }
     browser.findElementByCssSelector("input#name").sendKeys(name);
     browser.findElementByCssSelector("form").submit();
@@ -95,13 +95,13 @@ public class DesignAndOrderTacosBrowserTest {
     assertThat(browser.getCurrentUrl()).isEqualTo(designPageUrl());
     List<WebElement> ingredientGroups = browser.findElementsByClassName("ingredient-group");
     assertThat(ingredientGroups).hasSize(5);
-    
+
     WebElement wrapGroup = browser.findElementByCssSelector("div.ingredient-group#wraps");
     List<WebElement> wraps = wrapGroup.findElements(By.tagName("div"));
     assertThat(wraps).hasSize(2);
     assertIngredient(wrapGroup, 0, "COTO", "Corn Tortilla");
     assertIngredient(wrapGroup, 1, "FLTO", "Flour Tortilla");
-    
+
     WebElement proteinGroup = browser.findElementByCssSelector("div.ingredient-group#proteins");
     List<WebElement> proteins = proteinGroup.findElements(By.tagName("div"));
     assertThat(proteins).hasSize(2);
@@ -126,7 +126,7 @@ public class DesignAndOrderTacosBrowserTest {
     assertIngredient(sauceGroup, 0, "SLSA", "Salsa");
     assertIngredient(sauceGroup, 1, "SRCR", "Sour Cream");
   }
-  
+
 
   private void fillInAndSubmitOrderForm() {
     assertThat(browser.getCurrentUrl()).startsWith(orderDetailsPageUrl());
@@ -136,7 +136,7 @@ public class DesignAndOrderTacosBrowserTest {
     fillField("input#deliveryState", "CO");
     fillField("input#deliveryZip", "81019");
     fillField("input#ccNumber", "4111111111111111");
-    fillField("input#ccExpiration", "10/19");
+    fillField("input#ccExpiration", "10/24");
     fillField("input#ccCVV", "123");
     browser.findElementByCssSelector("form").submit();
   }
@@ -144,7 +144,7 @@ public class DesignAndOrderTacosBrowserTest {
   private void submitEmptyOrderForm() {
     assertThat(browser.getCurrentUrl()).isEqualTo(currentOrderDetailsPageUrl());
     browser.findElementByCssSelector("form").submit();
-    
+
     assertThat(browser.getCurrentUrl()).isEqualTo(orderDetailsPageUrl());
 
     List<String> validationErrors = getValidationErrorTexts();
@@ -181,7 +181,7 @@ public class DesignAndOrderTacosBrowserTest {
     fillField("input#ccExpiration", "14/91");
     fillField("input#ccCVV", "1234");
     browser.findElementByCssSelector("form").submit();
-    
+
     assertThat(browser.getCurrentUrl()).isEqualTo(orderDetailsPageUrl());
 
     List<String> validationErrors = getValidationErrorTexts();
@@ -199,8 +199,8 @@ public class DesignAndOrderTacosBrowserTest {
     field.clear();
     field.sendKeys(value);
   }
-  
-  private void assertIngredient(WebElement ingredientGroup, 
+
+  private void assertIngredient(WebElement ingredientGroup,
                                 int ingredientId, String id, String name) {
     List<WebElement> proteins = ingredientGroup.findElements(By.tagName("div"));
     WebElement ingredient = proteins.get(ingredientId);
@@ -218,7 +218,7 @@ public class DesignAndOrderTacosBrowserTest {
     browser.findElementByCssSelector("a[id='another']").click();
   }
 
- 
+
   //
   // URL helper methods
   //

@@ -133,7 +133,7 @@ public class DesignAndOrderTacosBrowserTest {
     fillField("input#deliveryState", "CO");
     fillField("input#deliveryZip", "81019");
     fillField("input#ccNumber", "4111111111111111");
-    fillField("input#ccExpiration", "10/19");
+    fillField("input#ccExpiration", "10/23");
     fillField("input#ccCVV", "123");
     browser.findElementByCssSelector("form").submit();
   }

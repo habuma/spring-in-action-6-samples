@@ -12,7 +12,6 @@ import tacos.Taco;
 @Configuration
 public class SpringDataRestConfiguration {
 
-  //tag::tacoProcessor[]
   @Bean
   public RepresentationModelProcessor<PagedModel<EntityModel<Taco>>>
     tacoProcessor(EntityLinks links) {
@@ -29,6 +28,5 @@ public class SpringDataRestConfiguration {
       }
     };
   }
-  //end::tacoProcessor[]
   
 }

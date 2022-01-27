@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.0</version>
+    <version>2.5.3</version>
     <relativePath />
   </parent>
   <groupId>sia</groupId>
@@ -21,10 +21,12 @@
   </properties>
 
   <dependencies>
+    <!-- tag::thymeleafStarter[] -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
+    <!-- end::thymeleafStarter[] -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -67,25 +69,39 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
+    <!-- tag::lombokDependency[] -->
     <dependency>
     	<groupId>org.projectlombok</groupId>
     	<artifactId>lombok</artifactId>
     </dependency>
+    <!-- end::lombokDependency[] -->
 
+    <!-- tag::validationStarter[] -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+    <!-- end::validationStarter[] -->
   </dependencies>
 
+  <!-- tag::excludeLombok[] -->
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>
+  <!-- end::excludeLombok[] -->
 
   <repositories>
     <repository>
@@ -103,5 +119,3 @@
   </pluginRepositories>
 
 </project>
-
-

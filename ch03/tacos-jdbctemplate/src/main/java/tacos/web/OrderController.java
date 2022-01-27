@@ -1,4 +1,3 @@
-//tag::injectAndUseRepo[]
 package tacos.web;
 import javax.validation.Valid;
 
@@ -17,38 +16,28 @@ import tacos.data.OrderRepository;
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
 public class OrderController {
-  
+
   private OrderRepository orderRepo;
 
   public OrderController(OrderRepository orderRepo) {
     this.orderRepo = orderRepo;
   }
-  
-//end::injectAndUseRepo[]
-  
+
   @GetMapping("/current")
   public String orderForm() {
     return "orderForm";
   }
-  
-/*
-//tag::injectAndUseRepo[]
- ...
-//end::injectAndUseRepo[]
- */
 
-//tag::injectAndUseRepo[]
   @PostMapping
   public String processOrder(@Valid TacoOrder order, Errors errors, SessionStatus sessionStatus) {
     if (errors.hasErrors()) {
       return "orderForm";
     }
-    
+
     orderRepo.save(order);
     sessionStatus.setComplete();
-    
+
     return "redirect:/";
   }
 
 }
-//end::injectAndUseRepo[]

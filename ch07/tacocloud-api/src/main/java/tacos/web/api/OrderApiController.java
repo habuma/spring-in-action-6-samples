@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import tacos.Order;
+import tacos.TacoOrder;
 import tacos.data.OrderRepository;
 
 @RestController
-@RequestMapping(path="/orders",
+@RequestMapping(path="/api/orders",
                 produces="application/json")
-@CrossOrigin(origins="*")
+@CrossOrigin(origins="http://tacocloud:8080")
 public class OrderApiController {
 
   private OrderRepository repo;
@@ -30,32 +30,29 @@ public class OrderApiController {
   }
 
   @GetMapping(produces="application/json")
-  public Iterable<Order> allOrders() {
+  public Iterable<TacoOrder> allOrders() {
     return repo.findAll();
   }
 
   @PostMapping(consumes="application/json")
   @ResponseStatus(HttpStatus.CREATED)
-  public Order postOrder(@RequestBody Order order) {
+  public TacoOrder postOrder(@RequestBody TacoOrder order) {
     return repo.save(order);
   }
 
-  //tag::putOrder[]
   @PutMapping(path="/{orderId}", consumes="application/json")
-  public Order putOrder(
+  public TacoOrder putOrder(
                         @PathVariable("orderId") Long orderId,
-                        @RequestBody Order order) {
+                        @RequestBody TacoOrder order) {
     order.setId(orderId);
     return repo.save(order);
   }
-  //end::putOrder[]
 
-  //tag::patchOrder[]
   @PatchMapping(path="/{orderId}", consumes="application/json")
-  public Order patchOrder(@PathVariable("orderId") Long orderId,
-                          @RequestBody Order patch) {
+  public TacoOrder patchOrder(@PathVariable("orderId") Long orderId,
+                          @RequestBody TacoOrder patch) {
 
-    Order order = repo.findById(orderId).get();
+    TacoOrder order = repo.findById(orderId).get();
     if (patch.getDeliveryName() != null) {
       order.setDeliveryName(patch.getDeliveryName());
     }
@@ -69,7 +66,7 @@ public class OrderApiController {
       order.setDeliveryState(patch.getDeliveryState());
     }
     if (patch.getDeliveryZip() != null) {
-      order.setDeliveryZip(patch.getDeliveryState());
+      order.setDeliveryZip(patch.getDeliveryZip());
     }
     if (patch.getCcNumber() != null) {
       order.setCcNumber(patch.getCcNumber());
@@ -82,9 +79,7 @@ public class OrderApiController {
     }
     return repo.save(order);
   }
-  //end::patchOrder[]
 
-  //tag::deleteOrder[]
   @DeleteMapping("/{orderId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteOrder(@PathVariable("orderId") Long orderId) {
@@ -92,6 +87,5 @@ public class OrderApiController {
       repo.deleteById(orderId);
     } catch (EmptyResultDataAccessException e) {}
   }
-  //end::deleteOrder[]
 
 }

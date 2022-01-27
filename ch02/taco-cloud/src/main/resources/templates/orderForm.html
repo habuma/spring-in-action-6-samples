@@ -13,7 +13,13 @@
       <h1>Order your taco creations!</h1>
 
       <img th:src="@{/images/TacoCloud.png}"/>
+
+      <h3>Your tacos in this order:</h3>
       <a th:href="@{/design}" id="another">Design another taco</a><br/>
+      <ul>
+        <li th:each="taco : ${tacoOrder.tacos}">
+          <span th:text="${taco.name}">taco name</span></li>
+      </ul>
 
 <!-- end::allButValidation[] -->
       <div th:if="${#fields.hasErrors()}">

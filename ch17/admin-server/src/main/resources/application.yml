@@ -1,0 +1,10 @@
+server:
+  port: 9090
+  
+# tag::securityCreds[]
+spring:
+  security:
+    user:
+      name: admin
+      password: 53cr3t
+# end::securityCreds[]

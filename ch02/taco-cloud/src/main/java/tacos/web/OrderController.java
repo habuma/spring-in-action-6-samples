@@ -1,22 +1,13 @@
-// tag::baseClass[]
-//tag::orderForm[]
 package tacos.web;
-//end::orderForm[]
 import javax.validation.Valid;
 
-//tag::orderForm[]
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-//end::orderForm[]
 import org.springframework.validation.Errors;
-//tag::orderForm[]
 import org.springframework.web.bind.annotation.GetMapping;
-//end::orderForm[]
-//end::baseClass[]
 import org.springframework.web.bind.annotation.PostMapping;
-//tag::baseClass[]
-//tag::orderForm[]
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
 import tacos.TacoOrder;
@@ -24,41 +15,35 @@ import tacos.TacoOrder;
 @Slf4j
 @Controller
 @RequestMapping("/orders")
+@SessionAttributes("tacoOrder")
 public class OrderController {
 
-//end::baseClass[]
   @GetMapping("/current")
-  public String orderForm(Model model) {
-    model.addAttribute("tacoOrder", new TacoOrder());
+  public String orderForm() {
     return "orderForm";
   }
-//end::orderForm[]
 
 /*
-//tag::handlePost[]
   @PostMapping
-  public String processOrder(Order order) {
-    log.info("Order submitted: " + order);
+  public String processOrder(TacoOrder order,
+		  SessionStatus sessionStatus) {
+    log.info("Order submitted: {}", order);
+    sessionStatus.setComplete();
+
     return "redirect:/";
   }
-//end::handlePost[]
 */
 
-//tag::handlePostWithValidation[]
   @PostMapping
-  public String processOrder(@Valid TacoOrder order, Errors errors) {
+  public String processOrder(@Valid TacoOrder order, Errors errors,
+		  SessionStatus sessionStatus) {
     if (errors.hasErrors()) {
       return "orderForm";
     }
 
-    log.info("Order submitted: " + order);
+    log.info("Order submitted: {}", order);
+    sessionStatus.setComplete();
+
     return "redirect:/";
   }
-//end::handlePostWithValidation[]
-
-//tag::baseClass[]
-//tag::orderForm[]
-
 }
-//end::orderForm[]
-//end::baseClass[]

@@ -1,0 +1,45 @@
+security:
+  user:
+    name: buzz
+    password: infinity
+
+taco:
+  orders:
+    pageSize: 10
+
+
+  discount:
+    codes:
+      abcdef: 10
+
+logging:
+  level:
+    org.springframework.security: debug
+
+spring:
+  data:
+    rest:
+      base-path: /data-api
+  datasource:
+    generate-unique-name: false
+    name: tacocloud
+
+# tag::jwkSetUri[]
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+# end::jwkSetUri[]
+---
+spring:
+  profiles: prod
+
+  datasource:
+    url: jdbc:mysql://localhost/tacocloud
+    username: tacouser
+    password: tacopassword
+
+logging:
+  level:
+    tacos: WARN

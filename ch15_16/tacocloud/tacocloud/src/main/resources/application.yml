@@ -1,0 +1,97 @@
+security:
+  user:
+    name: buzz
+    password: infinity
+
+taco:
+  orders:
+    pageSize: 10
+
+
+  discount:
+    codes:
+      abcdef: 10
+
+#logging:
+#  level:
+#    org.springframework.data.rest: debug
+
+# tag::springBootAdminCreds[]
+# tag::springBootAdminUri[]
+spring:
+# end::springBootAdminUri[]
+# end::springBootAdminCreds[]
+  application:
+    name: taco-cloud
+  data:
+    rest:
+      base-path: /data-api
+    cassandra:
+      keyspace-name: tacocloud
+      schema-action: recreate
+# tag::springBootAdminCreds[]
+# tag::springBootAdminUri[]
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+# end::springBootAdminUri[]
+        username: admin
+        password: 53cr3t
+# end::springBootAdminCreds[]
+
+# The values given here are actually the default values. But they are explicitly
+# set here as an example of setting the Kafka properties.
+  kafka:
+    bootstrap-servers:
+    - localhost:9092
+    template:
+      default-topic: tacocloud.orders.topic
+    producer:
+      keySerializer: org.springframework.kafka.support.serializer.JsonSerializer
+      valueSerializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+#tag::exposeAll[]
+#tag::excludeSome[]
+#tag::healthShowDetails[]
+#tag::infoGitModeFull[]
+management:
+#end::infoGitModeFull[]
+#end::healthShowDetails[]
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#end::exposeAll[]
+        exclude: threaddump,heapdump
+#end::excludeSome[]
+#tag::healthShowDetails[]
+  endpoint:
+    health:
+      show-details: always
+#end::healthShowDetails[]
+#tag::infoGitModeFull[]
+  info:
+    git:
+      mode: full
+#end::infoGitModeFull[]
+
+#tag::contactInfo[]
+info:
+  contact:
+    email: support@tacocloud.com
+    phone: 822-625-6831
+#end::contactInfo[]
+
+---
+spring:
+  profiles: prod
+
+  datasource:
+    url: jdbc:mysql://localhost/tacocloud
+    username: tacouser
+    password: tacopassword
+
+logging:
+  level:
+    tacos: WARN

@@ -29,10 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .authorizeRequests()
         .antMatchers(HttpMethod.OPTIONS).permitAll() // needed for Angular/CORS
-        .antMatchers("/design", "/orders/**")
+        .antMatchers("/api/**")
             .permitAll()
             //.access("hasRole('USER')")
-        .antMatchers(HttpMethod.PATCH, "/ingredients").permitAll()
+        .antMatchers(HttpMethod.PATCH, "/api/ingredients").permitAll()
         .antMatchers("/**").access("permitAll")
 
       .and()
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
       .and()
         .csrf()
-          .ignoringAntMatchers("/h2-console/**", "/ingredients/**", "/design", "/orders/**")
+          .ignoringAntMatchers("/h2-console/**", "/api/**")
 
       // Allow pages to be loaded in frames from the same origin; needed for H2-Console
       .and()

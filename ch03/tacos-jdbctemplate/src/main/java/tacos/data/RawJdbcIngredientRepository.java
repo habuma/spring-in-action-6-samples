@@ -17,7 +17,7 @@ import tacos.Ingredient;
 /**
  * Raw implementation of {@link IngredientRepository} for
  * comparison with {@link JdbcIngredientRepository} to illustrate
- * the power of using {@link JdbcTemplate}. 
+ * the power of using {@link JdbcTemplate}.
  * @author habuma
  */
 public class RawJdbcIngredientRepository implements IngredientRepository {
@@ -27,7 +27,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
   public RawJdbcIngredientRepository(DataSource dataSource) {
     this.dataSource = dataSource;
   }
-  
+
   @Override
   public Iterable<Ingredient> findAll() {
     List<Ingredient> ingredients = new ArrayList<>();
@@ -37,7 +37,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
     try {
       connection = dataSource.getConnection();
       statement = connection.prepareStatement(
-          "select id, name, type from Ingredient where id=?");
+          "select id, name, type from Ingredient");
       resultSet = statement.executeQuery();
       while(resultSet.next()) {
         Ingredient ingredient = new Ingredient(
@@ -45,7 +45,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
             resultSet.getString("name"),
             Ingredient.Type.valueOf(resultSet.getString("type")));
         ingredients.add(ingredient);
-      }      
+      }
     } catch (SQLException e) {
       // ??? What should be done here ???
     } finally {
@@ -67,8 +67,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
     }
     return ingredients;
   }
-  
-  // tag::rawfindOne[]
+
   @Override
   public Optional<Ingredient> findById(String id) {
     Connection connection = null;
@@ -77,7 +76,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
     try {
       connection = dataSource.getConnection();
       statement = connection.prepareStatement(
-          "select id, name, type from Ingredient");
+          "select id, name, type from Ingredient where id=?");
       statement.setString(1, id);
       resultSet = statement.executeQuery();
       Ingredient ingredient = null;
@@ -86,7 +85,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
             resultSet.getString("id"),
             resultSet.getString("name"),
             Ingredient.Type.valueOf(resultSet.getString("type")));
-      } 
+      }
       return Optional.of(ingredient);
     } catch (SQLException e) {
       // ??? What should be done here ???
@@ -107,9 +106,8 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
         } catch (SQLException e) {}
       }
     }
-    return null;
+    return Optional.empty();
   }
-  // end::rawfindOne[]
   
   @Override
   public Ingredient save(Ingredient ingredient) {
@@ -117,5 +115,5 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
     //       I've not bothered implementing this one (yet).
     return null;
   }
-  
+
 }

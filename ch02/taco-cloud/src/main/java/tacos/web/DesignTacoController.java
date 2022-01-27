@@ -1,4 +1,3 @@
-// tag::head[]
 package tacos.web;
 
 import java.util.Arrays;
@@ -16,12 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import tacos.Ingredient;
 import tacos.Ingredient.Type;
 import tacos.Taco;
-//end::head[]
+import tacos.TacoOrder;
 
 import javax.validation.Valid;
 import org.springframework.validation.Errors;
-
-//tag::head[]
 
 @Slf4j
 @Controller
@@ -29,9 +26,6 @@ import org.springframework.validation.Errors;
 @SessionAttributes("tacoOrder")
 public class DesignTacoController {
 
-//end::head[]
-
-//tag::addIngredientsToModel[]
 @ModelAttribute
 public void addIngredientsToModel(Model model) {
 	List<Ingredient> ingredients = Arrays.asList(
@@ -52,49 +46,49 @@ public void addIngredientsToModel(Model model) {
 	  model.addAttribute(type.toString().toLowerCase(),
 	      filterByType(ingredients, type));
 	}
-}
-//end::addIngredientsToModel[]
+  }
 
-//tag::showDesignForm[]
+  @ModelAttribute(name = "tacoOrder")
+  public TacoOrder order() {
+    return new TacoOrder();
+  }
+
+  @ModelAttribute(name = "taco")
+  public Taco taco() {
+    return new Taco();
+  }
+
   @GetMapping
-  public String showDesignForm(Model model) {
-    model.addAttribute("taco", new Taco());
+  public String showDesignForm() {
     return "design";
   }
 
-//end::showDesignForm[]
-
 /*
-//tag::processTaco[]
   @PostMapping
-  public String processTaco(Taco taco) {
-    // Save the taco...
-    // We'll do this in chapter 3
-    log.info("Processing taco: " + taco);
+  public String processTaco(Taco taco,
+  			@ModelAttribute TacoOrder tacoOrder) {
+    tacoOrder.addTaco(taco);
+    log.info("Processing taco: {}", taco);
 
     return "redirect:/orders/current";
   }
-
-//end::processTaco[]
  */
 
-//tag::processTacoValidated[]
   @PostMapping
-  public String processTaco(@Valid @ModelAttribute("taco") Taco taco, Errors errors) {
+  public String processTaco(
+		  @Valid Taco taco, Errors errors,
+		  @ModelAttribute TacoOrder tacoOrder) {
+
     if (errors.hasErrors()) {
       return "design";
     }
 
-    // Save the taco...
-    // We'll do this in chapter 3
-    log.info("Processing taco: " + taco);
+    tacoOrder.addTaco(taco);
+    log.info("Processing taco: {}", taco);
 
     return "redirect:/orders/current";
   }
 
-//end::processTacoValidated[]
-
-//tag::filterByType[]
   private Iterable<Ingredient> filterByType(
       List<Ingredient> ingredients, Type type) {
     return ingredients
@@ -103,7 +97,4 @@ public void addIngredientsToModel(Model model) {
               .collect(Collectors.toList());
   }
 
-//end::filterByType[]
-// tag::foot[]
 }
-// end::foot[]

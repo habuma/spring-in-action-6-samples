@@ -15,13 +15,10 @@ public class TacoCloudApplication {
     SpringApplication.run(TacoCloudApplication.class, args);
   }
 
-//tag::clr_dataLoader[]
   @Bean
   public CommandLineRunner dataLoader(IngredientRepository repo) {
     return args -> {
-//end::clr_dataLoader[]
       repo.deleteAll(); // TODO: Quick hack to avoid tests from stepping on each other with constraint violations
-//tag::clr_dataLoader[]
       repo.save(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
       repo.save(new Ingredient("COTO", "Corn Tortilla", Type.WRAP));
       repo.save(new Ingredient("GRBF", "Ground Beef", Type.PROTEIN));
@@ -34,6 +31,5 @@ public class TacoCloudApplication {
       repo.save(new Ingredient("SRCR", "Sour Cream", Type.SAUCE));
     };
   }
-//end::clr_dataLoader[]
 
 }

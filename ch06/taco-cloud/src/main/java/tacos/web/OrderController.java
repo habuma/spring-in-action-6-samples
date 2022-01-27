@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import tacos.Order;
+import tacos.TacoOrder;
 import tacos.User;
 import tacos.data.OrderRepository;
-
-// tag::OrderController_base[]
 
 @Controller
 @RequestMapping("/orders")
@@ -27,9 +25,6 @@ public class OrderController {
 
   private OrderRepository orderRepo;
 
-//end::OrderController_base[]
-
-  // tag::ordersForUser_paged_withHolder[]
   private OrderProps props;
 
   public OrderController(OrderRepository orderRepo,
@@ -37,11 +32,10 @@ public class OrderController {
     this.orderRepo = orderRepo;
     this.props = props;
   }
-  // end::ordersForUser_paged_withHolder[]
 
   @GetMapping("/current")
   public String orderForm(@AuthenticationPrincipal User user,
-      @ModelAttribute Order order) {
+      @ModelAttribute TacoOrder order) {
     if (order.getDeliveryName() == null) {
       order.setDeliveryName(user.getFullname());
     }
@@ -62,7 +56,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public String processOrder(@Valid Order order, Errors errors,
+  public String processOrder(@Valid TacoOrder order, Errors errors,
       SessionStatus sessionStatus,
       @AuthenticationPrincipal User user) {
 
@@ -78,16 +72,6 @@ public class OrderController {
     return "redirect:/";
   }
 
-  /*
-  //tag::ordersForUser_paged_withHolder[]
-
-    ...
-
-  //end::ordersForUser_paged_withHolder[]
-  
-   */
-
-  // tag::ordersForUser_paged_withHolder[]
   @GetMapping
   public String ordersForUser(
       @AuthenticationPrincipal User user, Model model) {
@@ -98,10 +82,8 @@ public class OrderController {
 
     return "orderList";
   }
-  // end::ordersForUser_paged_withHolder[]
 
   /*
-  // tag::ordersForUser_paged[]
   @GetMapping
   public String ordersForUser(
       @AuthenticationPrincipal User user, Model model) {
@@ -112,12 +94,9 @@ public class OrderController {
 
     return "orderList";
   }
-  // end::ordersForUser_paged[]
-
    */
 
   /*
-  // tag::ordersForUser[]
   @GetMapping
   public String ordersForUser(
       @AuthenticationPrincipal User user, Model model) {
@@ -127,20 +106,6 @@ public class OrderController {
 
     return "orderList";
   }
-  // end::ordersForUser[]
-
    */
 
-  /*
-  //tag::OrderController_base[]
-
-    ...
-
-  //end::OrderController_base[]
-
-   */
-
-
-//tag::OrderController_base[]
 }
-//end::OrderController_base[]

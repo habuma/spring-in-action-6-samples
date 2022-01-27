@@ -1,4 +1,3 @@
-// tag::testShowDesignForm[]
 package tacos;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,32 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import tacos.Ingredient.Type;
 import tacos.web.DesignTacoController;
 
-//tag::testProcessForm[]
 @ExtendWith(SpringExtension.class) // <1>
 @WebMvcTest(DesignTacoController.class)
 public class DesignTacoControllerTest {
-//end::testProcessForm[]
 
   @Autowired
   private MockMvc mockMvc;
 
   private List<Ingredient> ingredients;
 
-//end::testShowDesignForm[]
-
-  /*
-//tag::testProcessForm[]
-   ...
-
-//end::testProcessForm[]
- */
-
-//tag::testProcessForm[]
-//  private Taco design;
-
-//end::testProcessForm[]
-
-//tag::testShowDesignForm[]
   @BeforeEach
   public void setup() {
     ingredients = Arrays.asList(
@@ -63,15 +45,6 @@ public class DesignTacoControllerTest {
       new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
     );
 
-//end::testShowDesignForm[]
-
-//    design = new Taco();
-//    design.setName("Test Taco");
-//    design.setIngredients(Arrays.asList(
-//        new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
-//        new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-//        new Ingredient("CHED", "Cheddar", Type.CHEESE)));
-//tag::testShowDesignForm[]
   }
 
   @Test
@@ -85,16 +58,7 @@ public class DesignTacoControllerTest {
         .andExpect(model().attribute("cheese", ingredients.subList(6, 8)))
         .andExpect(model().attribute("sauce", ingredients.subList(8, 10)));
   }
-//end::testShowDesignForm[]
 
-  /*
-//tag::testProcessForm[]
-   ...
-
-//end::testProcessForm[]
- */
-
-//tag::testProcessForm[]
   @Test
   public void processTaco() throws Exception {
     mockMvc.perform(post("/design")
@@ -104,7 +68,4 @@ public class DesignTacoControllerTest {
         .andExpect(header().stringValues("Location", "/orders/current"));
   }
 
-//tag::testShowDesignForm[]
 }
-//end::testShowDesignForm[]
-//end::testProcessForm[]

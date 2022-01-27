@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import lombok.extern.slf4j.Slf4j;
 import tacos.Ingredient;
 import tacos.Ingredient.Type;
-import tacos.Order;
+import tacos.TacoOrder;
 import tacos.Taco;
 import tacos.User;
 import tacos.data.IngredientRepository;
@@ -62,8 +62,8 @@ public class DesignTacoController {
   }
 
   @ModelAttribute(name = "order")
-  public Order order() {
-    return new Order();
+  public TacoOrder order() {
+    return new TacoOrder();
   }
 
   @ModelAttribute(name = "taco")
@@ -79,14 +79,14 @@ public class DesignTacoController {
   }
 
   @GetMapping
-  public String showDesignForm(Model model) {
+  public String showDesignForm() {
     return "design";
   }
 
   @PostMapping
   public String processTaco(
       @Valid Taco taco, Errors errors,
-      @ModelAttribute Order order) {
+      @ModelAttribute TacoOrder order) {
 
     log.info("   --- Saving taco");
 

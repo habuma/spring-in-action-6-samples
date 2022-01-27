@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>tacocloud</artifactId>
+  <packaging>jar</packaging>
+
+  <name>taco-cloud</name>
+  <description>Taco Cloud Example</description>
+
+  <parent>
+    <groupId>sia</groupId>
+    <artifactId>taco-cloud-parent</artifactId>
+    <version>0.0.15-SNAPSHOT</version>
+  </parent>
+
+  <!-- tag::bootAdminVersion[] -->
+  <properties>
+  <!-- end::bootAdminVersion[] -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>11</java.version>
+  <!-- tag::bootAdminVersion[] -->
+    <spring-boot-admin.version>2.4.3</spring-boot-admin.version>
+  </properties>
+  <!-- end::bootAdminVersion[] -->
+
+  <dependencies>
+    <!-- TacoCloud dependencies -->
+    <dependency>
+      <groupId>sia</groupId>
+      <artifactId>tacocloud-data-mongodb</artifactId>
+      <version>${tacocloud.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sia</groupId>
+      <artifactId>tacocloud-domain-mongodb</artifactId>
+      <version>${tacocloud.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sia</groupId>
+      <artifactId>tacocloud-security</artifactId>
+      <version>${tacocloud.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sia</groupId>
+      <artifactId>tacocloud-api</artifactId>
+      <version>${tacocloud.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>sia</groupId>
+      <artifactId>tacocloud-ui</artifactId>
+      <version>${tacocloud.version}</version>
+    </dependency>
+
+    <!-- Run against embedded H2 database by default -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ` and DevTools...just because -->
+    <!-- tag::actuatorDependency[] -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!-- end::actuatorDependency[] -->
+
+  <!-- tag::bootAdminDependency[] -->
+    <dependency>
+      <groupId>de.codecentric</groupId>
+      <artifactId>spring-boot-admin-starter-client</artifactId>
+    </dependency>
+  <!-- end::bootAdminDependency[] -->
+
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>htmlunit-driver</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.bonigarcia</groupId>
+      <artifactId>webdrivermanager</artifactId>
+      <version>4.4.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- tag::buildInfoGoal[] -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+  <!-- end::buildInfoGoal[] -->
+  <!-- tag::gitCommitIdPlugin[] -->
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+      </plugin>
+  <!-- end::gitCommitIdPlugin[] -->
+  <!-- tag::buildInfoGoal[] -->      
+    </plugins>
+  </build>
+  <!-- end::buildInfoGoal[] -->
+
+  <!-- tag::bootAdminDependencyManagement[] -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>de.codecentric</groupId>
+        <artifactId>spring-boot-admin-dependencies</artifactId>
+        <version>${spring-boot-admin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <!-- end::bootAdminDependencyManagement[] -->
+</project>

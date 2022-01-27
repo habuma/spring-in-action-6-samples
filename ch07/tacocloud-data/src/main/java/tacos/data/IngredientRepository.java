@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import tacos.Ingredient;
 
-@CrossOrigin(origins="*")
-public interface IngredientRepository 
+@CrossOrigin(origins="http://tacocloud:8080")
+public interface IngredientRepository
          extends CrudRepository<Ingredient, String> {
 
 }

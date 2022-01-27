@@ -1,0 +1,69 @@
+= Taco Cloud - Chapter 7
+
+Note that this is a WIP README. For now, it will tersely describe how to build, test, and run the code in this folder.
+
+== Testing
+
+----
+$ ./mvnw test
+----
+
+== Building
+
+----
+$ ./mvnw package
+----
+
+== Running
+
+After building:
+
+----
+$ java -jar tacocloud/target/taco-cloud-0.0.7-SNAPSHOT.jar
+----
+
+Once the application is running, you can poke at the API using `curl` like this:
+
+Fetch a list of ingredients:
+
+----
+$ curl localhost:8080/api/ingredients
+----
+
+Fetch a list of recently created tacos:
+
+----
+$ curl localhost:8080/api/tacos?recent
+----
+
+Fetch a list of orders:
+
+----
+$ curl localhost:8080/api/orders
+----
+
+Fetch a list of ingredients via the Spring Data REST-exposed API:
+
+----
+$ curl localhost:8080/data-api/ingredients
+----
+
+Fetch a list of orders via the Spring Data REST-exposed API:
+
+----
+$ curl localhost:8080/data-api/orders
+----
+
+Fetch a list of tacos via the Spring Data REST-exposed API:
+
+----
+$ curl localhost:8080/data-api/tacos
+----
+
+Or just fetch all resource links fromt he Spring Data-REST exposed API:
+
+----
+$ curl localhost:8080/data-api
+----
+
+You can also test out the Taco Cloud application in your browser by entering http://localhost:8080 in the browser's address bar.

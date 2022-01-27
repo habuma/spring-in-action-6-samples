@@ -59,14 +59,14 @@ public class DesignTacoController {
   }
 
   @GetMapping
-  public String showDesignForm(Model model) {
+  public String showDesignForm() {
     return "design";
   }
 
   @PostMapping
   public String processTaco(
       @Valid Taco taco, Errors errors,
-      @ModelAttribute TacoOrder tacoOrder, Model model) {
+      @ModelAttribute TacoOrder tacoOrder) {
 
     if (errors.hasErrors()) {
       return "design";
