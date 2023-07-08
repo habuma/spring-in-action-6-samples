@@ -35,7 +35,7 @@ public class OrderController {
 */
 
   @PostMapping
-  public String processOrder(@Valid TacoOrder order, Errors errors,
+  public String processOrder(@Valid  @ModelAttribute("tacoOrder") TacoOrder order, Errors errors,
 		  SessionStatus sessionStatus) {
     if (errors.hasErrors()) {
       return "orderForm";
