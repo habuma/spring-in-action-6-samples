@@ -44,11 +44,11 @@ public class IngredientController {
   }
 
   @PutMapping("/{id}")
-  public void updateIngredient(@PathVariable String id, @RequestBody Ingredient ingredient) {
+  public Mono<Ingredient> updateIngredient(@PathVariable String id, @RequestBody Ingredient ingredient) {
     if (!ingredient.getId().equals(id)) {
       throw new IllegalStateException("Given ingredient's ID doesn't match the ID in the path.");
     }
-    repo.save(ingredient);
+    return repo.save(ingredient);
   }
 
   @PostMapping
@@ -63,8 +63,8 @@ public class IngredientController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteIngredient(@PathVariable String id) {
-    repo.deleteById(id);
+  public Mono<Void> deleteIngredient(@PathVariable String id) {
+    return repo.deleteById(id);
   }
 
 }
