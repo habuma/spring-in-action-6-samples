@@ -1,8 +1,11 @@
 package tacos.web;
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.cassandra.core.CassandraBatchOperations;
+import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,19 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import tacos.Taco;
 import tacos.TacoOrder;
-import tacos.data.OrderRepository;
 
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("tacoOrder")
+@Slf4j
 public class OrderController {
 
-  private OrderRepository orderRepo;
-
-  public OrderController(OrderRepository orderRepo) {
-    this.orderRepo = orderRepo;
-  }
+  @Autowired
+  private CassandraTemplate template;
 
   @GetMapping("/current")
   public String orderForm() {
@@ -35,7 +36,16 @@ public class OrderController {
       return "orderForm";
     }
 
-    orderRepo.save(order);
+    log.info("Use CassandraBatchOperations to save order.");
+    CassandraBatchOperations batch = template.batchOps();
+    batch.insert(order);
+    order.getTacos().stream().map(a -> {
+      Taco taco = new Taco();
+      taco.setName(a.getName());
+      taco.setIngredients(a.getIngredients());
+      return taco;
+    }).forEach(batch::insert);
+    batch.execute();
     sessionStatus.setComplete();
 
     return "redirect:/";
