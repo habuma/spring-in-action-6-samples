@@ -39,12 +39,12 @@ public class OrderController {
     log.info("Use CassandraBatchOperations to save order.");
     CassandraBatchOperations batch = template.batchOps();
     batch.insert(order);
-    order.getTacos().stream().map(a -> {
+    batch.insert(order.getTacos().stream().map(a -> {
       Taco taco = new Taco();
       taco.setName(a.getName());
       taco.setIngredients(a.getIngredients());
       return taco;
-    }).forEach(batch::insert);
+    }));
     batch.execute();
     sessionStatus.setComplete();
 
