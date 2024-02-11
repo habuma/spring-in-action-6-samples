@@ -17,7 +17,7 @@ import tacos.Ingredient.Type;
 import tacos.Taco;
 import tacos.TacoOrder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import org.springframework.validation.Errors;
 
 @Slf4j
