@@ -27,11 +27,10 @@ create table if not exists Ingredient_Ref (
 
 
 create table if not exists Ingredient (
-  id varchar(4) not null,
+  id varchar(4) primary key not null,
   name varchar(25) not null,
   type varchar(10) not null
 );
-
 
 alter table Taco
     add foreign key (taco_order) references Taco_Order(id);

@@ -33,11 +33,13 @@ public class JdbcOrderRepository implements OrderRepository {
   public TacoOrder save(TacoOrder order) {
     PreparedStatementCreatorFactory pscf =
       new PreparedStatementCreatorFactory(
-        "insert into Taco_Order "
-        + "(delivery_name, delivery_street, delivery_city, "
-        + "delivery_state, delivery_zip, cc_number, "
-        + "cc_expiration, cc_cvv, placed_at) "
-        + "values (?,?,?,?,?,?,?,?,?)",
+        """
+        insert into Taco_Order \
+        (delivery_name, delivery_street, delivery_city, \
+        delivery_state, delivery_zip, cc_number, \
+        cc_expiration, cc_cvv, placed_at) \
+        values (?,?,?,?,?,?,?,?,?)\
+        """,
         Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
         Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
         Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP
@@ -76,9 +78,11 @@ public class JdbcOrderRepository implements OrderRepository {
     taco.setCreatedAt(new Date());
     PreparedStatementCreatorFactory pscf =
             new PreparedStatementCreatorFactory(
-        "insert into Taco "
-        + "(name, created_at, taco_order, taco_order_key) "
-        + "values (?, ?, ?, ?)",
+        """
+        insert into Taco \
+        (name, created_at, taco_order, taco_order_key) \
+        values (?, ?, ?, ?)\
+        """,
         Types.VARCHAR, Types.TIMESTAMP, Type.LONG, Type.LONG
     );
     pscf.setReturnGeneratedKeys(true);
@@ -106,8 +110,10 @@ public class JdbcOrderRepository implements OrderRepository {
     int key = 0;
     for (IngredientRef ingredientRef : ingredientRefs) {
       jdbcOperations.update(
-          "insert into Ingredient_Ref (ingredient, taco, taco_key) "
-          + "values (?, ?, ?)",
+          """
+          insert into Ingredient_Ref (ingredient, taco, taco_key) \
+          values (?, ?, ?)\
+          """,
           ingredientRef.getIngredient(), tacoId, key++);
     }
   }
@@ -116,9 +122,11 @@ public class JdbcOrderRepository implements OrderRepository {
   public Optional<TacoOrder> findById(Long id) {
     try {
       TacoOrder order = jdbcOperations.queryForObject(
-          "select id, delivery_name, delivery_street, delivery_city, "
-              + "delivery_state, delivery_zip, cc_number, cc_expiration, "
-              + "cc_cvv, placed_at from Taco_Order where id=?",
+          """
+          select id, delivery_name, delivery_street, delivery_city, \
+          delivery_state, delivery_zip, cc_number, cc_expiration, \
+          cc_cvv, placed_at from Taco_Order where id=?\
+          """,
           (row, rowNum) -> {
             TacoOrder tacoOrder = new TacoOrder();
             tacoOrder.setId(row.getLong("id"));
@@ -142,8 +150,10 @@ public class JdbcOrderRepository implements OrderRepository {
 
   private List<Taco> findTacosByOrderId(long orderId) {
     return jdbcOperations.query(
-        "select id, name, created_at from Taco "
-        + "where taco_order=? order by taco_order_key",
+        """
+        select id, name, created_at from Taco \
+        where taco_order=? order by taco_order_key\
+        """,
         (row, rowNum) -> {
           Taco taco = new Taco();
           taco.setId(row.getLong("id"));
@@ -157,8 +167,10 @@ public class JdbcOrderRepository implements OrderRepository {
 
   private List<IngredientRef> findIngredientsByTacoId(long tacoId) {
     return jdbcOperations.query(
-        "select ingredient from Ingredient_Ref "
-        + "where taco = ? order by taco_key",
+        """
+        select ingredient from Ingredient_Ref \
+        where taco = ? order by taco_key\
+        """,
         (row, rowNum) -> {
           return new IngredientRef(row.getString("ingredient"));
         },
