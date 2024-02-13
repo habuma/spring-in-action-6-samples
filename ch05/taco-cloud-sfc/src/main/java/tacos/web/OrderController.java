@@ -1,5 +1,5 @@
 package tacos.web;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
