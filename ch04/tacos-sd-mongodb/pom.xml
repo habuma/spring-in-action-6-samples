@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.3</version>
+    <version>3.2.2</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -25,7 +25,7 @@
       UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>
       UTF-8</project.reporting.outputEncoding>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencies>
@@ -94,6 +94,7 @@
     <dependency>
       <groupId>de.flapdoodle.embed</groupId>
       <artifactId>de.flapdoodle.embed.mongo</artifactId>
+      <version>4.12.2</version>
       <!-- <scope>test</scope> -->
     </dependency>
     <!-- end::flapDoodle[] -->
@@ -124,5 +125,3 @@
   </pluginRepositories> -->
 
 </project>
-
-
