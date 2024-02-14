@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @Disabled("TODO: Need to get around authentication in this test")
 public class DesignTacoControllerBrowserTest {
@@ -50,7 +47,7 @@ public class DesignTacoControllerBrowserTest {
   public void testDesignATacoPage() throws Exception {
     browser.get("http://localhost:" + port + "/design");
 
-    List<WebElement> ingredientGroups = browser.findElementsByClassName("ingredient-group");
+    List<WebElement> ingredientGroups = browser.findElements(By.className("ingredient-group"));
     assertThat(ingredientGroups).hasSize(5);
     
     WebElement wrapGroup = ingredientGroups.get(0);
@@ -75,3 +72,4 @@ public class DesignTacoControllerBrowserTest {
   }
   
 }
+

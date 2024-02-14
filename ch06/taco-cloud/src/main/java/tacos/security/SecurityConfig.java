@@ -1,68 +1,61 @@
 package tacos.security;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web
-                        .configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web
-                        .configuration.WebSecurityConfigurerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation
-             .authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web
-             .builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+import tacos.User;
+import tacos.data.UserRepository;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-  @Autowired
-  private UserDetailsService userDetailsService;
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-      .authorizeRequests()
-        .antMatchers("/design", "/orders")
-          .access("hasRole('USER')")
-        .antMatchers("/**").access("permitAll")
-
-      .and()
-        .formLogin()
-          .loginPage("/login")
-
-      .and()
-        .logout()
-          .logoutSuccessUrl("/")
-
-      .and()
-        .csrf()
-          .ignoringAntMatchers("/h2-console/**")
-
-      // Allow pages to be loaded in frames from the same origin; needed for H2-Console
-      .and()
-        .headers()
-          .frameOptions()
-            .sameOrigin()
-      ;
-  }
-
+public class SecurityConfig {
+  
   @Bean
-  public PasswordEncoder encoder() {
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth)
-      throws Exception {
-
-    auth
-      .userDetailsService(userDetailsService)
-      .passwordEncoder(encoder());
-
+  
+  @Bean
+  public UserDetailsService userDetailsService(UserRepository userRepo) {
+    return username -> {
+      User user = userRepo.findByUsername(username);
+      if (user != null) {
+        return user;
+      }
+      throw new UsernameNotFoundException(
+                      "User '" + username + "' not found");
+    };
   }
-
+  
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    return http
+        .authorizeHttpRequests(requests -> requests
+            .requestMatchers("/design", "/orders").hasRole("USER")
+            .requestMatchers("/login", "/", "/**").permitAll())
+            // .anyRequest().permitAll())
+        .formLogin(login -> login
+            .loginPage("/login"))
+        .logout(logout -> logout
+            .logoutSuccessUrl("/"))
+        .csrf(csrf -> csrf
+            .ignoringRequestMatchers("/h2-console/**"))
+        .headers(headers -> headers
+            .frameOptions(options -> options
+                .sameOrigin()))
+        .build();
+  }
+  
 }

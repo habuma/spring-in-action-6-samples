@@ -1,5 +1,5 @@
 package tacos.web;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -7,12 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import tacos.data.IngredientRepository;
@@ -21,7 +20,6 @@ import tacos.data.TacoRepository;
 import tacos.data.UserRepository;
 import tacos.web.OrderProps;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest // (secure=false)
 public class HomeControllerTest {
 
@@ -54,6 +52,7 @@ public class HomeControllerTest {
   private OrderProps orderProps;
 
   @Test
+  @WithMockUser
   public void testHomePage() throws Exception {
     mockMvc.perform(get("/"))
       .andExpect(status().isOk())
